@@ -31,7 +31,24 @@ public class BazaKsiazek {
     }
 
     public void usun() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Usuwanie ksiazki");
+        System.out.print("Podaj autora: ");
+        String autor = scanner.next();
+        System.out.print("Podaj tytuł książki: ");
+        String tytul = scanner.next();
 
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotekadb",
+                    "root",
+                    "");
+            Statement statement = con.createStatement();
+            statement.executeUpdate("DELETE FROM ksiazka WHERE ksiazka.autor = '" +  autor + "' AND ksiazka.tytul = '" + tytul + "';");
+
+        } catch(Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     public String[] wyszukaj(String tytul, String autor) throws Exception{
@@ -56,9 +73,46 @@ public class BazaKsiazek {
             return ksiazka;
         }catch (Exception e) {
             System.out.println(e.toString());
-            e.printStackTrace();
         }
         return null;
     }
 
+    public void zaktualizuj() {
+        System.out.println("Co chcesz zaktualizowac?");
+        System.out.println("1. Tytul");
+        System.out.println("2. Autor");
+        System.out.println("3. ISBN");
+        System.out.println("4. Wydawnictwo");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotekadb",
+                    "root",
+                    "");
+            Statement statement = con.createStatement();
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Podaj 1,2,3 lub 4");
+            int wybor = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Wpisz co chcesz zmienić: ");
+            String s = scanner.nextLine();
+            System.out.print("Na co chcesz zmienić: ");
+            String s2 = scanner.nextLine();
+            switch(wybor) {
+                case 1:
+                    statement.executeUpdate("UPDATE ksiazka SET ksiazka.tytul = '" +  s2 + "' WHERE ksiazka.tytul = '" + s + "' ;");
+                    break;
+                case 2:
+                    statement.executeUpdate("UPDATE ksiazka SET ksiazka.autor = '" + s2 + "' WHERE ksiazka.autor = '" + s + "' ;");
+                    break;
+                case 3:
+                    statement.executeUpdate("UPDATE ksiazka SET ksiazka.ISBN = '" + s2 + "' WHERE ksiazka.ISBN = '" + s + "' ;");
+                    break;
+                case 4:
+                    statement.executeUpdate("UPDATE ksiazka SET ksiazka.wydawnictwo = '" + s2 + "' WHERE ksiazka.wydawnictwo = '" + s + "' ;");
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
 }
