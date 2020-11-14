@@ -43,7 +43,7 @@ CREATE TABLE `ksiazka` (
   `ID_ksiazki` int(9) NOT NULL,
   `Autor` varchar(50) COLLATE utf8_polish_ci NOT NULL,
   `Tytul` varchar(50) COLLATE utf8_polish_ci NOT NULL,
-  `IBSN` varchar(10) COLLATE utf8_polish_ci NOT NULL,
+  `ISBN` varchar(10) COLLATE utf8_polish_ci NOT NULL,
   `Wydawnictwo` varchar(100) COLLATE utf8_polish_ci NOT NULL,
   `Status` int(1) NOT NULL,
   `ID_uzytkownika` int(9) DEFAULT NULL
@@ -53,7 +53,7 @@ CREATE TABLE `ksiazka` (
 -- Zrzut danych tabeli `ksiazka`
 --
 
-INSERT INTO `ksiazka` (`ID_ksiazki`, `Autor`, `Tytul`, `IBSN`, `Wydawnictwo`, `Status`, `ID_uzytkownika`) VALUES
+INSERT INTO `ksiazka` (`ID_ksiazki`, `Autor`, `Tytul`, `ISBN`, `Wydawnictwo`, `Status`, `ID_uzytkownika`) VALUES
 (1, 'Henryk Sienkiewicz', 'Krzyzacy', '78654', 'Bellona', 1, NULL),
 (2, 'Boleslaw Prus', 'Lalka', '54786', 'Greg', 1, NULL),
 (3, 'Fiodor Dostojewski', 'Zbrodnia i kara', '89321', 'Greg', 0, 1),
