@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BazaKsiazek {
@@ -51,7 +52,7 @@ public class BazaKsiazek {
         }
     }
 
-    public String[] wyszukaj(String tytul, String autor) throws Exception{
+    public String[] wyszukaj(String tytul, String autor){
         String[] ksiazka = new String[5];
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -72,6 +73,33 @@ public class BazaKsiazek {
             }
             return ksiazka;
         }catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return null;
+    }
+
+    public ArrayList<String> wyszukaj(String imie, String nazwisko, int status){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotekadb",
+                    "root",
+                    "");
+            Statement statement = con.createStatement();
+            String sql = "SELECT ksiazka.*\n" +
+                    "FROM ksiazka \n" +
+                    "\tLEFT JOIN uzytkownik ON ksiazka.`ID_uzytkownika` = uzytkownik.`ID_uzytkownika`\n" +
+                    "WHERE uzytkownik.`Imie` = '" + imie + "' AND uzytkownik.Nazwisko = '" + nazwisko + "' AND ksiazka.status = '" + status + "'; ";
+            System.out.println(sql);
+            ResultSet rs = statement.executeQuery(sql);
+            ArrayList<String> lista = new ArrayList<>();
+            while(rs.next()) {
+                lista.add(rs.getString("Tytul"));
+                lista.add(rs.getString("Autor"));
+                lista.add(rs.getString("ISBN"));
+                lista.add(rs.getString("Wydawnictwo"));
+            }
+            return lista;
+        }catch(Exception e){
             System.out.println(e.toString());
         }
         return null;
