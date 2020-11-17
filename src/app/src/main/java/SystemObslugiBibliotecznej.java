@@ -12,8 +12,8 @@ public class SystemObslugiBibliotecznej {
 
     public void zaloguj(){
         Scanner scanner = new Scanner(System.in);
-        int ID_uzytkownika;
-        int ID_bibliotekarza;
+        int ID_uzytkownika = -1;
+        int ID_bibliotekarza = -1;
         while (true) {
             System.out.print("Podaj login: ");
             login = scanner.next();
@@ -52,17 +52,17 @@ public class SystemObslugiBibliotecznej {
         }
         if (typ == 0){
             System.out.println("Zalogowano bibliotekarza");
-            /*
+
             Bibliotekarz bibliotekarz = new Bibliotekarz(ID_bibliotekarza);
             bibliotekarz.wyswietlMenu();
-             */
+
         }
         if (typ == 1){
             System.out.println("Zalogowano użytkownika");
-            /*
+
             Uzytkownik uzytkownik = new Uzytkownik(ID_uzytkownika);
             uzytkownik.wyswietlMenu();
-             */
+
         }
     }
 
@@ -117,8 +117,24 @@ public class SystemObslugiBibliotecznej {
 
     public static void main(String[] args) {
         SystemObslugiBibliotecznej system = new SystemObslugiBibliotecznej();
-        system.zarejestruj();
-        system.zaloguj();
-        system.wyloguj();
+        System.out.println("Wybierz opcję:");
+        System.out.println("1. Zaloguj się");
+        System.out.println("2. Zarejestruj się");
+        System.out.println("3. Zakończ");
+        Scanner scanner = new Scanner(System.in);
+        int wybor;
+        wybor = scanner.nextInt();
+        switch(wybor) {
+            case 1: {
+                system.zaloguj();
+                break;
+            }
+            case 2: {
+                system.zarejestruj();
+            }
+            case 3: {
+                System.exit(0);
+            }
+        }
     }
 }
