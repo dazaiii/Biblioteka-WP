@@ -1,12 +1,9 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BazaKsiazek {
-    public void dodaj(){
+    public void dodaj() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Podaj autora: ");
         String autor = scanner.next();
@@ -53,14 +50,14 @@ public class BazaKsiazek {
     }
 
     public String[] wyszukaj(String tytul, String autor){
-        String[] ksiazka = new String[5];
+        String[] ksiazka = new String[6];
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotekadb",
                     "root",
                     "");
             Statement statement = con.createStatement();
-            String sql = "SELECT Tytul, Autor, ISBN, Wydawnictwo, Status FROM Ksiazka WHERE Tytul = '";
+            String sql = "SELECT Tytul, Autor, ISBN, Wydawnictwo, Status, Data_wypozyczenia FROM Ksiazka WHERE Tytul = '";
             sql = sql + (tytul + "' AND Autor = '" + autor + "';");
             System.out.println(sql);
             ResultSet rs = statement.executeQuery(sql);
@@ -70,6 +67,7 @@ public class BazaKsiazek {
                 ksiazka[2] = rs.getString("ISBN");
                 ksiazka[3] = rs.getString("Wydawnictwo");
                 ksiazka[4] = rs.getString("Status");
+                ksiazka[5] = rs.getDate("Data_wypozyczenia").toString();
             }
             return ksiazka;
         }catch (Exception e) {
@@ -140,6 +138,41 @@ public class BazaKsiazek {
                     break;
             }
         } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void zaktualizuj(String tytul, String autor, int statusKsiazki) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotekadb",
+                    "root",
+                    "");
+            Statement statement = con.createStatement();
+            String sql = "UPDATE Ksiazka SET Ksiazka.Status = '" + statusKsiazki + "' WHERE Ksiazka.tytul = '" + tytul + "' AND Ksiazka.autor = '" + autor + "';";
+            statement.executeUpdate(sql);
+            if(statusKsiazki == 1) {
+                String sql2 = "SELECT Ksiazka.Data_wypozyczenia FROM Ksiazka;";
+                ResultSet rs = statement.executeQuery(sql);
+                java.sql.Date data = new Date(0000-00-00);
+                if (rs.next()){
+                    data = rs.getDate("Data_wypozyczenia");
+                    int miesiac = data.getMonth() + 3;
+                    data.setMonth(miesiac);
+                    String sql3 = "UPDATE Ksiazka SET Ksiazka.Data_wypozyczenia = '" + data + "' WHERE Ksiazka.Tytul = '" + tytul + "' AND Ksiazka.autor = '" + autor + "';";
+                    statement.executeUpdate(sql3);
+                }
+                else {
+                    long millis = System.currentTimeMillis();
+                    data.setTime(millis);
+                    int miesiac = data.getMonth() + 3;
+                    data.setMonth(miesiac);
+                    String sql3 = "UPDATE Ksiazka SET Ksiazka.Data_wypozyczenia = '" + data + "' WHERE Ksiazka.Tytul = '" + tytul + "' AND Ksiazka.autor = '" + autor + "';";
+                    statement.executeUpdate(sql3);
+                }
+
+            }
+        } catch(Exception e) {
             System.out.println(e.toString());
         }
     }
