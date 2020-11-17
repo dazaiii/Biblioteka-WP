@@ -9,8 +9,9 @@ public class Konto {
     private int ZarezerwowaneKsiazki;
 
     public Konto(String imie, String nazwisko){
-        this.WypozyczoneKsiazki = sprawdzWypozyczone(imie,nazwisko);
-        this.ZarezerwowaneKsiazki = sprawdzRezerwacje(imie, nazwisko);
+        BazaKsiazek bazaKsiazek = new BazaKsiazek();
+        this.WypozyczoneKsiazki = bazaKsiazek.wyszukaj(imie,nazwisko,0).size();
+        this.ZarezerwowaneKsiazki = bazaKsiazek.wyszukaj(imie,nazwisko,2).size();
     }
 
     public int sprawdzWypozyczone(String imie, String nazwisko) {
@@ -18,11 +19,11 @@ public class Konto {
         ArrayList<String> lista = new ArrayList<>();
         int ileKsiazek = 0;
         lista = bazaKsiazek.wyszukaj(imie, nazwisko, 0);
-        for(int i = 0; i < lista.size(); i+=4) {
+        for(int i = 0; i < lista.size(); i+=5) {
             ileKsiazek++;
         }
-        for(int i = 0; i < lista.size(); i+=4) {
-            for(int j = 0; j < 4; j++) {
+        for(int i = 0; i < lista.size(); i+=5) {
+            for(int j = i; j < i+5; j++) {
                 System.out.print(lista.get(j) + " ");
             }
             System.out.println();
@@ -35,11 +36,11 @@ public class Konto {
         ArrayList<String> lista = new ArrayList<>();
         int ileKsiazek = 0;
         lista = bazaKsiazek.wyszukaj(imie, nazwisko, 2);
-        for(int i = 0; i < lista.size(); i+=4) {
+        for(int i = 0; i < lista.size(); i+=5) {
             ileKsiazek++;
         }
-        for(int i = 0; i < lista.size(); i+=4) {
-            for(int j = 0; j < 4; j++) {
+        for(int i = 0; i < lista.size(); i+=5) {
+            for(int j = i; j < i+4; j++) {
                 System.out.print(lista.get(j) + " ");
             }
             System.out.println();
@@ -56,7 +57,9 @@ public class Konto {
                         "root",
                         "");
                 Statement statement = con.createStatement();
-                statement.executeUpdate("UPDATE Uzytkownik SET Uzytkownik.StatusKonta = 1 WHERE Uzytkownik.imie = '" + imie + "' AND Uzytkownik.nazwisko = '" + nazwisko + "' ;");
+                statement.executeUpdate("UPDATE Uzytkownik SET Uzytkownik.Status_konta = 1 WHERE Uzytkownik.imie = '" + imie + "' AND Uzytkownik.nazwisko = '" + nazwisko + "' ;");
+                con.close();
+                System.out.println("Przedłużono ważność konta");
             } catch(Exception e) {
                 System.out.println(e.toString());
             }
