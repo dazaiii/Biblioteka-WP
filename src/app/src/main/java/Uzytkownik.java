@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class Uzytkownik {
@@ -7,42 +11,137 @@ public class Uzytkownik {
     private Konto konto;
 
     public Uzytkownik(int id) {
-        this.imie = imie;
-        this.nazwisko = nazwisko;
-        this.pesel = pesel;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bibliotekadb",
+                    "root",
+                    "");
+            Statement statement = con.createStatement();
+            String sql = "SELECT imie, nazwisko, pesel FROM Uzytkownik WHERE ID_uzytkownika = '" + id + "';";
+            ResultSet rs = statement.executeQuery(sql);
+            while(rs.next()) {
+                this.imie = rs.getString("Imie");
+                this.nazwisko = rs.getString("Nazwisko");
+                this.pesel = rs.getString("Pesel");
+                this.konto = new Konto(imie,nazwisko);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     public void wyswietlMenu(){
+        while (true) {
         System.out.println("MENU: ");
         System.out.println("1. Sprawdź wypożyczone książki");
         System.out.println("2. Sprzwdź zarezerwowane książki");
         System.out.println("3. Przedłuż ważność konta");
-        System.out.println("4. Wyszukaj ksiazke");
-        Konto konto1 = new Konto(imie, nazwisko);
-        BazaKsiazek bazaKsiazek = new BazaKsiazek();
+        System.out.println("4. Wyszukaj opis książki");
+        System.out.println("5. Wypozycz książkę");
+        System.out.println("6. Rezerwuj książkę");
+        System.out.println("7. Zwróć książkę");
+        System.out.println("8. Przedłuż wypożyczenie książki");
+        System.out.println("9. Wyloguj się");
+        Ksiazka ksiazka1 = new Ksiazka();
         Scanner scanner = new Scanner(System.in);
         int wybor = scanner.nextInt();
-        while (true) {
             switch (wybor) {
                 case 1: {
-                    konto1.sprawdzWypozyczone(imie, nazwisko);
+                    konto.sprawdzWypozyczone(imie, nazwisko);
+                    break;
                 }
                 case 2: {
-                    konto1.sprawdzRezerwacje(imie, nazwisko);
+                    konto.sprawdzRezerwacje(imie, nazwisko);
+                    break;
                 }
                 case 3: {
-                    konto1.przedluzWaznoscKonta(imie, nazwisko);
+                    konto.przedluzWaznoscKonta(imie, nazwisko);
+                    break;
                 }
                 case 4: {
                     String autor, tytul;
                     System.out.print("Podaj autora ksiazki: ");
                     Scanner a = new Scanner(System.in);
-                    autor = a.toString();
+                    autor = a.nextLine();
                     System.out.println("Podaj tytul ksiazki: ");
                     Scanner t = new Scanner(System.in);
-                    tytul = t.toString();
-                    bazaKsiazek.wyszukaj(autor, tytul);
+                    tytul = t.nextLine();
+                    ksiazka1.opis(tytul, autor);
+                    break;
                 }
+                case 5: {
+                    String autor, tytul;
+                    System.out.print("Podaj autora ksiazki: ");
+                    Scanner a = new Scanner(System.in);
+                    autor = a.nextLine();
+                    System.out.println("Podaj tytul ksiazki: ");
+                    Scanner t = new Scanner(System.in);
+                    tytul = t.nextLine();
+                    try {
+                        ksiazka1.wypozycz(tytul, autor,imie,nazwisko);
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                    break;
+                }
+                case 6: {
+                    String autor, tytul;
+                    System.out.print("Podaj autora ksiazki: ");
+                    Scanner a = new Scanner(System.in);
+                    autor = a.nextLine();
+                    System.out.println("Podaj tytul ksiazki: ");
+                    Scanner t = new Scanner(System.in);
+                    tytul = t.nextLine();
+                    try {
+                        ksiazka1.rezerwuj(tytul, autor,imie,nazwisko);
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                    break;
+                }
+                case 7: {
+                    System.out.println("Twoje wypożyczone książki to:");
+                    konto.sprawdzWypozyczone(imie, nazwisko);
+                    System.out.println("Wprowadź dane książki, którą chcesz oddać");
+                    String autor, tytul;
+                    System.out.print("Podaj autora ksiazki: ");
+                    Scanner a = new Scanner(System.in);
+                    autor = a.nextLine();
+                    System.out.println("Podaj tytul ksiazki: ");
+                    Scanner t = new Scanner(System.in);
+                    tytul = t.nextLine();
+                    try {
+                        ksiazka1.zwroc(tytul, autor,imie,nazwisko);
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                    break;
+                }
+                case 8: {
+                    System.out.println("Twoje wypożyczone książki to:");
+                    konto.sprawdzWypozyczone(imie, nazwisko);
+                    System.out.println("Wprowadź dane książki, której datę wypożyczenia chcesz przedłużyć");
+                    String autor, tytul;
+                    System.out.print("Podaj autora ksiazki: ");
+                    Scanner a = new Scanner(System.in);
+                    autor = a.nextLine();
+                    System.out.println("Podaj tytul ksiazki: ");
+                    Scanner t = new Scanner(System.in);
+                    tytul = t.nextLine();
+                    try {
+                        ksiazka1.przedluzWypozyczenie(tytul, autor,imie,nazwisko);
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
+                    break;
+                }
+
+                case 9: {
+                    SystemObslugiBibliotecznej system = new SystemObslugiBibliotecznej();
+                    system.wyloguj();
+
+                }
+
                 default: {
                     System.out.println("Podano niewłąściwą opcję");
                 }
