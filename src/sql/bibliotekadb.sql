@@ -1,6 +1,16 @@
+-- phpMyAdmin SQL Dump
+-- version 5.0.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 17 Lis 2020, 23:29
+-- Wersja serwera: 10.4.11-MariaDB
+-- Wersja PHP: 7.4.6
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -46,19 +56,20 @@ CREATE TABLE `ksiazka` (
   `ISBN` varchar(10) COLLATE utf8_polish_ci NOT NULL,
   `Wydawnictwo` varchar(100) COLLATE utf8_polish_ci NOT NULL,
   `Status` int(1) NOT NULL,
-  `ID_uzytkownika` int(9) DEFAULT NULL
+  `ID_uzytkownika` int(9) DEFAULT NULL,
+  `Data_wypozyczenia` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
 -- Zrzut danych tabeli `ksiazka`
 --
 
-INSERT INTO `ksiazka` (`ID_ksiazki`, `Autor`, `Tytul`, `ISBN`, `Wydawnictwo`, `Status`, `ID_uzytkownika`) VALUES
-(1, 'Henryk Sienkiewicz', 'Krzyzacy', '78654', 'Bellona', 1, NULL),
-(2, 'Boleslaw Prus', 'Lalka', '54786', 'Greg', 1, NULL),
-(3, 'Fiodor Dostojewski', 'Zbrodnia i kara', '89321', 'Greg', 0, 1),
-(4, 'Osamu Dazai', 'Zatracenie', '75908', 'Czytelnik', 1, NULL),
-(5, 'Arthur Conan Doyle', 'Sherlock Holmes', '76590', 'Zysk', 1, NULL);
+INSERT INTO `ksiazka` (`ID_ksiazki`, `Autor`, `Tytul`, `ISBN`, `Wydawnictwo`, `Status`, `ID_uzytkownika`, `Data_wypozyczenia`) VALUES
+(1, 'Henryk Sienkiewicz', 'Krzyzacy', '78654', 'Bellona', 1, NULL, NULL),
+(2, 'Boleslaw Prus', 'Lalka', '54786', 'Greg', 1, NULL, NULL),
+(3, 'Fiodor Dostojewski', 'Zbrodnia i kara', '89321', 'Greg', 0, 1, '2021-01-01'),
+(4, 'Osamu Dazai', 'Zatracenie', '75908', 'Czytelnik', 1, NULL, NULL),
+(5, 'Arthur Conan Doyle', 'Sherlock Holmes', '76590', 'Zysk', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -123,6 +134,7 @@ ALTER TABLE `bibliotekarz`
 --
 ALTER TABLE `ksiazka`
   ADD PRIMARY KEY (`ID_ksiazki`),
+  ADD UNIQUE KEY `ISBN` (`ISBN`),
   ADD KEY `ID_uzytkownika` (`ID_uzytkownika`);
 
 --
@@ -153,19 +165,19 @@ ALTER TABLE `bibliotekarz`
 -- AUTO_INCREMENT dla tabeli `ksiazka`
 --
 ALTER TABLE `ksiazka`
-  MODIFY `ID_ksiazki` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID_ksiazki` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT dla tabeli `system`
 --
 ALTER TABLE `system`
-  MODIFY `ID_systemu` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID_systemu` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT dla tabeli `uzytkownik`
 --
 ALTER TABLE `uzytkownik`
-  MODIFY `ID_uzytkownika` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID_uzytkownika` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Ograniczenia dla zrzutów tabel
