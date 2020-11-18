@@ -117,24 +117,8 @@ public class SystemObslugiBibliotecznej {
 
     public static void main(String[] args) {
         SystemObslugiBibliotecznej system = new SystemObslugiBibliotecznej();
-        System.out.println("Wybierz opcję:");
-        System.out.println("1. Zaloguj się");
-        System.out.println("2. Zarejestruj się");
-        System.out.println("3. Zakończ");
-        Scanner scanner = new Scanner(System.in);
-        int wybor;
-        wybor = scanner.nextInt();
-        switch(wybor) {
-            case 1: {
-                system.zaloguj();
-                break;
-            }
-            case 2: {
-                system.zarejestruj();
-            }
-            case 3: {
-                System.exit(0);
-            }
-        }
+        //system.zarejestruj();
+        system.zaloguj();
+        //system.wyloguj();
     }
 }

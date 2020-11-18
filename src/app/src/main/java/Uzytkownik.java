@@ -41,7 +41,6 @@ public class Uzytkownik {
         System.out.println("6. Rezerwuj książkę");
         System.out.println("7. Zwróć książkę");
         System.out.println("8. Przedłuż wypożyczenie książki");
-        System.out.println("9. Wyloguj się");
         Ksiazka ksiazka1 = new Ksiazka();
         Scanner scanner = new Scanner(System.in);
         int wybor = scanner.nextInt();
@@ -134,12 +133,6 @@ public class Uzytkownik {
                         System.out.println(e.toString());
                     }
                     break;
-                }
-
-                case 9: {
-                    SystemObslugiBibliotecznej system = new SystemObslugiBibliotecznej();
-                    system.wyloguj();
-
                 }
 
                 default: {

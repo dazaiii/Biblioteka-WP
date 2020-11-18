@@ -19,11 +19,11 @@ public class Konto {
         ArrayList<String> lista = new ArrayList<>();
         int ileKsiazek = 0;
         lista = bazaKsiazek.wyszukaj(imie, nazwisko, 0);
-        for(int i = 0; i < lista.size(); i+=5) {
+        for(int i = 0; i < lista.size(); i+=4) {
             ileKsiazek++;
         }
-        for(int i = 0; i < lista.size(); i+=5) {
-            for(int j = i; j < i+5; j++) {
+        for(int i = 0; i < lista.size(); i+=4) {
+            for(int j = i; j < i+4; j++) {
                 System.out.print(lista.get(j) + " ");
             }
             System.out.println();
@@ -36,10 +36,10 @@ public class Konto {
         ArrayList<String> lista = new ArrayList<>();
         int ileKsiazek = 0;
         lista = bazaKsiazek.wyszukaj(imie, nazwisko, 2);
-        for(int i = 0; i < lista.size(); i+=5) {
+        for(int i = 0; i < lista.size(); i+=4) {
             ileKsiazek++;
         }
-        for(int i = 0; i < lista.size(); i+=5) {
+        for(int i = 0; i < lista.size(); i+=4) {
             for(int j = i; j < i+4; j++) {
                 System.out.print(lista.get(j) + " ");
             }
@@ -59,7 +59,6 @@ public class Konto {
                 Statement statement = con.createStatement();
                 statement.executeUpdate("UPDATE Uzytkownik SET Uzytkownik.Status_konta = 1 WHERE Uzytkownik.imie = '" + imie + "' AND Uzytkownik.nazwisko = '" + nazwisko + "' ;");
                 con.close();
-                System.out.println("Przedłużono ważność konta");
             } catch(Exception e) {
                 System.out.println(e.toString());
             }

@@ -31,50 +31,44 @@ public class Bibliotekarz {
     }
 
     public void wyswietlMenu(){
-        while(true) {
-            System.out.println("Witaj " + imie + " " + nazwisko);
-            System.out.println("1. Dodaj książkę");
-            System.out.println("2. Aktualizuj dane książki");
-            System.out.println("3. Usuń książkę");
-            System.out.println("4. Wyszukaj książkę");
-            Scanner scanner = new Scanner(System.in);
-
-                System.out.print("Wybierz opcję: ");
-                int wybor = scanner.nextInt();
-                switch (wybor){
-                    case 1:{
-                        BazaKsiazek bazaKsiazek = new BazaKsiazek();
-                        bazaKsiazek.dodaj();
-                        System.out.println("Dodano książkę do bazy\n");
-                        break;
-                    }
-                    case 2:{
-                        BazaKsiazek bazaKsiazek = new BazaKsiazek();
-                        bazaKsiazek.zaktualizuj();
-                        System.out.println("Zaktualizowano dane książki\n");
-                        break;
-                    }
-                    case 3:{
-                        BazaKsiazek bazaKsiazek = new BazaKsiazek();
-                        bazaKsiazek.usun();
-                        System.out.println("Usunięto książkę\n");
-                        break;
-                    }
-                    case 4:{
-                        BazaKsiazek bazaKsiazek = new BazaKsiazek();
-                        scanner.nextLine();
-                        System.out.print("Podaj tytuł książki: ");
-                        String tytul = scanner.nextLine();
-                        System.out.print("Podaj autora książki: ");
-                        String autor = scanner.nextLine();
-                        Ksiazka k = new Ksiazka();
-                        System.out.println();
-                        k.opis(tytul,autor);
-                        System.out.println();
-                        break;
-                    }
+        System.out.println("Witaj " + imie + " " + nazwisko);
+        System.out.println("1. Dodaj książkę");
+        System.out.println("2. Aktualizuj dane książki");
+        System.out.println("3. Usuń książkę");
+        System.out.println("4. Wyszukaj książkę");
+        Scanner scanner = new Scanner(System.in);
+        while (true){
+            System.out.print("Wybierz opcję: ");
+            int wybor = scanner.nextInt();
+            switch (wybor){
+                case 1:{
+                    BazaKsiazek bazaKsiazek = new BazaKsiazek();
+                    bazaKsiazek.dodaj();
+                    break;
+                }
+                case 2:{
+                    BazaKsiazek bazaKsiazek = new BazaKsiazek();
+                    bazaKsiazek.zaktualizuj();
+                    break;
+                }
+                case 3:{
+                    BazaKsiazek bazaKsiazek = new BazaKsiazek();
+                    bazaKsiazek.usun();
+                    break;
+                }
+                case 4:{
+                    BazaKsiazek bazaKsiazek = new BazaKsiazek();
+                    scanner.nextLine();
+                    System.out.print("Podaj tytuł książki: ");
+                    String tytul = scanner.nextLine();
+                    System.out.print("Podaj autora książki: ");
+                    String autor = scanner.nextLine();
+                    bazaKsiazek.wyszukaj(tytul,autor);
+                    break;
                 }
             }
         }
+
+    }
 }
 

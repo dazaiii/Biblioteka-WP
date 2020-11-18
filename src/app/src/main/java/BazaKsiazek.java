@@ -99,7 +99,6 @@ public class BazaKsiazek {
                 lista.add(rs.getString("Autor"));
                 lista.add(rs.getString("ISBN"));
                 lista.add(rs.getString("Wydawnictwo"));
-                lista.add(rs.getString("Data_wypozyczenia"));
             }
             con.close();
             return lista;
